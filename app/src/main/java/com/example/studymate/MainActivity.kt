@@ -54,7 +54,7 @@ fun WebViewScreen(
 ) {
 	var webView by remember { mutableStateOf<WebView?>(null) }
 
-	BackHandler(enabled = true) {
+	BackHandler {
 		webView?.let { wv ->
 			if (wv.canGoBack()) {
 				wv.goBack()
