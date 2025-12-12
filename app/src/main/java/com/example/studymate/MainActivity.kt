@@ -1,7 +1,7 @@
 package com.example.studymate
 
-import android.annotation.SuppressLint
 import android.os.Bundle
+import android.util.Log
 import android.view.ViewGroup
 import android.webkit.WebResourceError
 import android.webkit.WebResourceRequest
@@ -14,7 +14,6 @@ import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -26,14 +25,24 @@ import androidx.compose.ui.viewinterop.AndroidView
 import com.example.studymate.ui.theme.AppTheme
 import com.example.studymate.ui.theme.MainTheme
 
-
-@SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
-class MainActivity : ComponentActivity() {
+internal class MainActivity : ComponentActivity() {
 	override fun onCreate(savedInstanceState: Bundle?) {
 		super.onCreate(savedInstanceState)
 		enableEdgeToEdge()
 		setContent {
-
+			MainTheme {
+				Scaffold(
+					modifier = Modifier.fillMaxSize(),
+					containerColor = AppTheme.colors.background
+				) { innerPadding ->
+					WebViewScreen(
+						modifier = Modifier
+							.fillMaxSize()
+							.padding(innerPadding),
+						url = "http://194.87.207.73/home"
+					)
+				}
+			}
 		}
 	}
 }
@@ -74,11 +83,11 @@ fun WebViewScreen(
 						error: WebResourceError?
 					) {
 						super.onReceivedError(view, request, error)
-						android.util.Log.e("WebView", "Error: ${error?.description}")
+						Log.e("WebView", "Error: ${error?.description}")
 					}
 				}
 				loadUrl(url)
-				webView = this  // Сохраняем ссылку
+				webView = this
 			}
 		},
 		update = { webViewInstance ->
